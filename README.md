@@ -13,3 +13,8 @@ BLDC motor controller code for use on TI LaunchXL-F280049C board.
 - Power domain isolation for real-time debug  and flash programming
 - Isolated CAN transceiver, Two encoder interface connectors, FSI interface connector
 - Hardware Files are in C2000Ware at boards\LaunchPads\LAUNCHXL_F280049C
+
+## Links and Resources
+- [LAUNCHXL-F280049C board website](https://www.ti.com/tool/LAUNCHXL-F280049C)
+- [(pdf) CPU Instruction Set (Chip Architecture)](https://www.ti.com/lit/pdf/spru430)
+- [(pdf) CPU Technical Reference Manual](https://www.ti.com/lit/pdf/sprui33)
