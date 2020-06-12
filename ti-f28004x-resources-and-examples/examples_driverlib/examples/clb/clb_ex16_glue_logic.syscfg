@@ -1,0 +1,140 @@
+// These arguments were used when this file was generated. They will be automatically applied on subsequent loads 
+// via the GUI or CLI invocations. Run CLI with '--help' for additional information on how to override these arguments.
+// @cliArgs --device "F28004x" --package "F28004x_100PZ" --part "F28004x_100PZ" --product "CLB Configuration Tool@1.0.0"
+// @versions {"data":"2019020517","timestamp":"2019020517","tool":"1.0.655","templates":"2019020517"}
+
+var TILE = scripting.addModule("/utilities/clb_tool/clb_syscfg/source/TILE");
+var TILE1 = TILE.addInstance();
+// clock_period - Period of the clock (in Nano Seconds) used for simulation in System C
+TILE.clock_period = 10;
+// sim_duration - Duration of the simulation (in Nano Seconds)
+TILE.sim_duration = 8000;
+// reset_duration - Time at which reset signal is deassrted, specified in Nano Seconds
+TILE.reset_duration = 10;
+// Name
+TILE1.$name = "TILE1";
+// Name
+TILE1.BOUNDARY.$name = "BOUNDARY0";
+// in0
+TILE1.BOUNDARY.in0 = "squareWave";
+// in1
+TILE1.BOUNDARY.in1 = "squareWave";
+// in2
+TILE1.BOUNDARY.in2 = "0";
+// in3
+TILE1.BOUNDARY.in3 = "squareWave";
+// in_sync3 - Turns the Clock synchronization on the inputs - for simulation purposes only
+TILE1.BOUNDARY.in_sync3 = true;
+// in_sync1 - Turns the Clock synchronization on the inputs - for simulation purposes only
+TILE1.BOUNDARY.in_sync1 = true;
+// in_repeat_count3 - Number of periods the waveform is repeated
+TILE1.BOUNDARY.in_repeat_count3 = 1;
+// in_repeat_count0 - Number of periods the waveform is repeated
+TILE1.BOUNDARY.in_repeat_count0 = 25;
+// in_repeat_count1 - Number of periods the waveform is repeated
+TILE1.BOUNDARY.in_repeat_count1 = 25;
+// in_edge0 - Edge detection on the inputs, generates 1 cycle pulse on chosen edges - for simulation purposes only
+TILE1.BOUNDARY.in_edge0 = "falling edge";
+// in_sync0 - Turns the Clock synchronization on the inputs - for simulation purposes only
+TILE1.BOUNDARY.in_sync0 = true;
+// in_period1 - Period of the square wave
+TILE1.BOUNDARY.in_period1 = 32;
+// in_duty1 - Duty or ON time of the square wave
+TILE1.BOUNDARY.in_duty1 = 16;
+// in_period0 - Period of the square wave
+TILE1.BOUNDARY.in_period0 = 32;
+// in_duty0 - Duty or ON time of the square wave
+TILE1.BOUNDARY.in_duty0 = 16;
+// in_period3 - Period of the square wave
+TILE1.BOUNDARY.in_period3 = 1472;
+// in_duty3 - Duty or ON time of the square wave
+TILE1.BOUNDARY.in_duty3 = 736;
+// Name
+TILE1.LUT_0.$name = "LUT_0";
+// i1 - Input 1.
+TILE1.LUT_0.i1 = "COUNTER_0.count_match1";
+// i2 - Input 2.
+TILE1.LUT_0.i2 = "COUNTER_0.count_match2";
+// i3 - Input 3.
+TILE1.LUT_0.i3 = "FSM_1.S0";
+// eqn - Boolean equation on the variables i3,i2,i1,i0 for the LUT output.
+TILE1.LUT_0.eqn = "(i2 & i3) | (i1 & (! i3))";
+// Name
+TILE1.LUT_1.$name = "LUT_1";
+// i0 - Input 0.
+TILE1.LUT_1.i0 = "FSM_1.S0";
+// i1 - Input 1.
+TILE1.LUT_1.i1 = "BOUNDARY.in1";
+// i2 - Input 2.
+TILE1.LUT_1.i2 = "BOUNDARY.in2";
+// eqn - Boolean equation on the variables i3,i2,i1,i0 for the LUT output.
+TILE1.LUT_1.eqn = "(! i0 & i1) | (i0 & i2)";
+// Name
+TILE1.LUT_2.$name = "LUT_2";
+// Name
+TILE1.FSM_0.$name = "FSM_0";
+// Name
+TILE1.FSM_1.$name = "FSM_1";
+// e0 - External Input 0.
+TILE1.FSM_1.e0 = "LUT_0.OUT";
+// eqn_s0 - Boolean equation on the variables e1,e0,s1,s0 for the S0 output.
+TILE1.FSM_1.eqn_s0 = "(e0 & (! s0)) | ((! e0) & s0)";
+// Name
+TILE1.FSM_2.$name = "FSM_2";
+// e0 - External Input 0.
+TILE1.FSM_2.e0 = "LUT_1.OUT";
+// e1 - External Input 1.
+TILE1.FSM_2.e1 = "BOUNDARY.in3";
+// eqn_s0 - Boolean equation on the variables e1,e0,s1,s0 for the S0 output.
+TILE1.FSM_2.eqn_s0 = "e0 | e1 ";
+// Name
+TILE1.COUNTER_0.$name = "COUNTER_0";
+// mode0 - Enables Counting when high
+TILE1.COUNTER_0.mode0 = "BOUNDARY.in0";
+// mode1 - Controls counting direction. High enables count up. Low enables count down.
+TILE1.COUNTER_0.mode1 = "1";
+// match1_val - Sets the value of the Match reference 1 register.
+TILE1.COUNTER_0.match1_val = "7";
+// match2_val - Sets the value of the Match reference 2 register.
+TILE1.COUNTER_0.match2_val = "3";
+// reset - Reset the counter to 0 on next clock cycle (triggers low to high)
+TILE1.COUNTER_0.reset = "LUT_0.OUT";
+// Name
+TILE1.COUNTER_1.$name = "COUNTER_1";
+// Name
+TILE1.COUNTER_2.$name = "COUNTER_2";
+// Name
+TILE1.OUTLUT_0.$name = "OUTLUT_0";
+// eqn - Boolean equation on the variables i2,i1,i0 for the OUTLUT output.
+TILE1.OUTLUT_0.eqn = "i0";
+// i0 - Input 0.
+TILE1.OUTLUT_0.i0 = "FSM_2.S0";
+// Name
+TILE1.OUTLUT_1.$name = "OUTLUT_1";
+// Name
+TILE1.OUTLUT_2.$name = "OUTLUT_2";
+// Name
+TILE1.OUTLUT_3.$name = "OUTLUT_3";
+// Name
+TILE1.OUTLUT_4.$name = "OUTLUT_4";
+// Name
+TILE1.OUTLUT_5.$name = "OUTLUT_5";
+// Name
+TILE1.OUTLUT_6.$name = "OUTLUT_6";
+// Name
+TILE1.OUTLUT_7.$name = "OUTLUT_7";
+// Name
+TILE1.HLC.$name = "HLC_0";
+// Name
+TILE1.HLC.program0.$name = "HLCP_0";
+// Name
+TILE1.HLC.program1.$name = "HLCP_1";
+// Name
+TILE1.HLC.program2.$name = "HLCP_2";
+// Name
+TILE1.HLC.program3.$name = "HLCP_3";
+var clb_run_dynamic_template_clb_h = scripting.addModule("/utilities/clb_tool/clb_syscfg/source/clb_run_dynamic_template_clb_h.js");
+var clb_run_dynamic_template_clb_c = scripting.addModule("/utilities/clb_tool/clb_syscfg/source/clb_run_dynamic_template_clb_c.js");
+var clb_run_dynamic_template_clb_sim = scripting.addModule("/utilities/clb_tool/clb_syscfg/source/clb_run_dynamic_template_clb_sim.js");
+var clb_run_dynamic_template_clb_dot = scripting.addModule("/utilities/clb_tool/clb_syscfg/source/clb_run_dynamic_template_clb_dot.js");
+

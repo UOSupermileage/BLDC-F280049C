@@ -1,0 +1,50 @@
+<projectSpec>
+  <project
+        name="flashapi_ex2_sci_kernel"
+        device="TMS320F280049C"
+        cgtVersion="18.12.1.LTS"
+        launchWizard="False"
+        enableHexTool="True"
+        linkerCommandFile=""
+		postBuildStep="&quot;${CG_TOOL_HEX}&quot; &quot;${BuildArtifactFileName}&quot; -boot -sci8 -a -o &quot;${BuildArtifactFileBaseName}.txt&quot;"
+        >
+    <configuration name="BANK0_LDFU" compilerBuildOptions="--opt_level=off -I${PROJECT_ROOT}/device -I${C2000WARE_DLIB_ROOT} -I${FlashAPI_INCLUDE_ROOT} -v28 -ml -mt --cla_support=cla2 --float_support=fpu32 --tmu_support=tmu0 --vcu_support=vcu0 --define=CPU1 --define=_FLASH --define=BANK0 --define=LIVE_UPDATE  --diag_warning=225  --diag_suppress=10063 --diag_wrap=off --display_error_number" linkerBuildOptions="-I${FlashAPI_LIB_ROOT} --entry_point _bankSelect --stack_size=0x100" hexBuildOptions="--boot --sci8 --ascii --outfile=${BuildArtifactFileBaseName}.txt" />
+    <configuration name="BANK0_LDFU_ROM" compilerBuildOptions="--opt_level=off -I${PROJECT_ROOT}/device -I${C2000WARE_DLIB_ROOT} -I${FlashAPI_INCLUDE_ROOT} -v28 -ml -mt --cla_support=cla2 --float_support=fpu32 --tmu_support=tmu0 --vcu_support=vcu0 --define=CPU1 --define=_FLASH --define=BANK0 --define=LIVE_UPDATE  --diag_warning=225  --diag_suppress=10063 --diag_wrap=off --display_error_number" linkerBuildOptions="-I${FlashAPI_LIB_ROOT} --entry_point _bankSelect --stack_size=0x100" hexBuildOptions="--boot --sci8 --ascii --outfile=${BuildArtifactFileBaseName}.txt" />
+    <configuration name="BANK0_NO_LDFU" compilerBuildOptions="--opt_level=off -I${PROJECT_ROOT}/device -I${C2000WARE_DLIB_ROOT} -I${FlashAPI_INCLUDE_ROOT} -v28 -ml -mt --cla_support=cla2 --float_support=fpu32 --tmu_support=tmu0 --vcu_support=vcu0 --define=CPU1 --define=_FLASH --define=BANK0  --diag_warning=225  --diag_suppress=10063 --diag_wrap=off --display_error_number" linkerBuildOptions="-I${FlashAPI_LIB_ROOT} --entry_point code_start --stack_size=0x100" hexBuildOptions="--boot --sci8 --ascii --outfile=${BuildArtifactFileBaseName}.txt" />
+    <configuration name="BANK1_LDFU" compilerBuildOptions="--opt_level=off -I${PROJECT_ROOT}/device -I${C2000WARE_DLIB_ROOT} -I${FlashAPI_INCLUDE_ROOT} -v28 -ml -mt --cla_support=cla2 --float_support=fpu32 --tmu_support=tmu0 --vcu_support=vcu0 --define=CPU1 --define=_FLASH --define=BANK1 --define=LIVE_UPDATE  --diag_warning=225  --diag_suppress=10063 --diag_wrap=off --display_error_number" linkerBuildOptions="-I${FlashAPI_LIB_ROOT} --entry_point code_start --stack_size=0x100" hexBuildOptions="--boot --sci8 --ascii --outfile=${BuildArtifactFileBaseName}.txt" /> 
+    <configuration name="BANK1_LDFU_ROM" compilerBuildOptions="--opt_level=off -I${PROJECT_ROOT}/device -I${C2000WARE_DLIB_ROOT} -I${FlashAPI_INCLUDE_ROOT} -v28 -ml -mt --cla_support=cla2 --float_support=fpu32 --tmu_support=tmu0 --vcu_support=vcu0 --define=CPU1 --define=_FLASH --define=BANK1 --define=LIVE_UPDATE  --diag_warning=225  --diag_suppress=10063 --diag_wrap=off --display_error_number" linkerBuildOptions="-I${FlashAPI_LIB_ROOT} --entry_point code_start --stack_size=0x100" hexBuildOptions="--boot --sci8 --ascii --outfile=${BuildArtifactFileBaseName}.txt" />  
+    <configuration name="BANK1_NO_LDFU" compilerBuildOptions="--opt_level=off -I${PROJECT_ROOT}/device -I${C2000WARE_DLIB_ROOT} -I${FlashAPI_INCLUDE_ROOT} -v28 -ml -mt --cla_support=cla2 --float_support=fpu32 --tmu_support=tmu0 --vcu_support=vcu0 --define=CPU1 --define=_FLASH --define=BANK1  --diag_warning=225  --diag_suppress=10063 --diag_wrap=off --display_error_number" linkerBuildOptions="-I${FlashAPI_LIB_ROOT} --entry_point code_start --stack_size=0x100" hexBuildOptions="--boot --sci8 --ascii --outfile=${BuildArtifactFileBaseName}.txt" />  
+    <configuration name="CPU1_RAM" compilerBuildOptions="--opt_level=off -I${PROJECT_ROOT}/device -I${C2000WARE_DLIB_ROOT} -I${FlashAPI_INCLUDE_ROOT} -v28 -ml -mt --define=DEBUG --cla_support=cla2 --float_support=fpu32 --tmu_support=tmu0 --vcu_support=vcu0 --define=CPU1  --diag_warning=225  --diag_suppress=10063 --display_error_number" linkerBuildOptions="--entry_point code_start --stack_size=0x100" hexBuildOptions="--boot --sci8 --ascii --outfile=${BuildArtifactFileBaseName}.txt" />
+    <pathVariable name="C2000WARE_DLIB_ROOT" path="../../../driverlib/" scope="project" />
+    <pathVariable name="FlashAPI_INCLUDE_ROOT" path="../../../../../libraries/flash_api/f28004x/include/FlashAPI/" scope="project" />
+    <pathVariable name="FlashAPI_LIB_ROOT" path="../../../../../libraries/flash_api/f28004x/lib/" scope="project" />
+    <file action="copy" path="../../../../../libraries/flash_api/f28004x/lib/F021_API_F28004x_FPU32.lib" targetDirectory="" applicableConfigurations="BANK0_LDFU,CPU1_RAM,BANK1_NO_LDFU,BANK0_NO_LDFU,BANK1_LDFU"/>
+    <file action="copy" path="../../../../../libraries/flash_api/f28004x/lib/F021_ROM_API_F28004x_FPU32.lib" targetDirectory="" applicableConfigurations="BANK0_LDFU_ROM,BANK1_LDFU_ROM" />
+    <file action="copy" path="../../../../../device_support/f28004x/common/include/driverlib.h" targetDirectory="device" />
+    <file action="copy" path="../../../../../device_support/f28004x/common/include/device.h" targetDirectory="device" />
+    <file action="copy" path="../../../../../device_support/f28004x/common/source/device.c" targetDirectory="device" />
+    <file action="copy" path="../../../../../device_support/f28004x/common/source/f28004x_codestartbranch.asm" targetDirectory="device" applicableConfigurations="BANK1_LDFU,BANK0_LDFU,BANK1_LDFU_ROM,BANK0_LDFU_ROM,BANK1_NO_LDFU,BANK0_NO_LDFU" />
+    <file action="copy" path="../../../../../device_support/f28004x/common/targetConfigs/TMS320F280049C.ccxml" targetDirectory="targetConfigs" />
+    <file action="copy" path="../../../../../device_support/f28004x/common/cmd/28004x_flash_bank0_LDFU_lnk.cmd" targetDirectory="" applicableConfigurations="BANK0_LDFU,BANK0_LDFU_ROM" />
+    <file action="copy" path="../../../../../device_support/f28004x/common/cmd/28004x_flash_bank0_NoLDFU_lnk.cmd" targetDirectory="" applicableConfigurations="BANK0_NO_LDFU" />
+    <file action="copy" path="../../../../../device_support/f28004x/common/cmd/28004x_flash_bank1_LDFU_lnk.cmd" targetDirectory="" applicableConfigurations="BANK1_LDFU,BANK1_LDFU_ROM" />
+    <file action="copy" path="../../../../../device_support/f28004x/common/cmd/28004x_flash_bank1_NoLDFU_lnk.cmd" targetDirectory="" applicableConfigurations="BANK1_NO_LDFU"/>
+    <file action="copy" path="../../../../../device_support/f28004x/common/cmd/28004x_generic_ram_lnk.cmd" targetDirectory="" applicableConfigurations="CPU1_RAM" />
+    <file action="link" path="../../../driverlib/ccs/Debug/driverlib.lib" targetDirectory="" />
+    <file action="copy" path="../../../driverlib/" targetDirectory="device" excludeFromBuild="True"/>
+    <file action="copy" path="../flashapi_ex2_sci_kernel.c" targetDirectory="" />
+    <file action="copy" path="../flashapi_ex2_boot.c" targetDirectory="" applicableConfigurations="BANK1_NO_LDFU,CPU1_RAM,BANK0_NO_LDFU" />
+    <file action="copy" path="../flashapi_ex2_bootrom.h" targetDirectory="" />
+    <file action="copy" path="../flashapi_ex2_erase.c" targetDirectory="" applicableConfigurations="BANK1_NO_LDFU,CPU1_RAM,BANK0_NO_LDFU" />
+    <file action="copy" path="../flashapi_ex2_erase.h" targetDirectory="" />
+    <file action="copy" path="../flashapi_ex2_sci_get_function.c" targetDirectory="" />
+    <file action="copy" path="../flashapi_ex2_verify.h" targetDirectory="" />
+    <file action="copy" path="../flashapi_ex2_verify.c" targetDirectory="" applicableConfigurations="BANK1_NO_LDFU,CPU1_RAM,BANK0_NO_LDFU" />
+    <file action="copy" path="../flashapi_ex2_sci_boot.c" targetDirectory="" applicableConfigurations="BANK1_NO_LDFU,CPU1_RAM,BANK0_NO_LDFU" />
+    <file action="copy" path="../flashapi_ex2_flash_programming_c28.h" targetDirectory="" />
+    <file action="copy" path="../flashapi_ex2_commands.h" targetDirectory="" />
+    <file action="copy" path="../flashapi_ex2_ldfu.h" targetDirectory="" applicableConfigurations="BANK1_LDFU,BANK0_LDFU,BANK1_LDFU_ROM,BANK0_LDFU_ROM" />
+    <file action="copy" path="../flashapi_ex2_ldfu.c" targetDirectory="" applicableConfigurations="BANK1_LDFU,BANK0_LDFU,BANK1_LDFU_ROM,BANK0_LDFU_ROM"/>
+    <file action="copy" path="../flashapi_ex2_codestartbranch.asm" targetDirectory="" applicableConfigurations="CPU1_RAM" />
+  </project>
+</projectSpec>

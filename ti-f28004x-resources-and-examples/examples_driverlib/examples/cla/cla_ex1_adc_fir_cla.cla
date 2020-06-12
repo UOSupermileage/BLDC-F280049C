@@ -1,0 +1,226 @@
+//#############################################################################
+//
+// FILE:   cla_ex1_adc_fir_cla.cla
+//
+// TITLE:  CLA ADC Sampling and Filtering
+//
+// Task 1 implements a Finite Impulse Response Filter
+//
+//#############################################################################
+// $TI Release: F28004x Support Library v1.10.00.00 $
+// $Release Date: Tue May 26 17:06:03 IST 2020 $
+// $Copyright:
+// Copyright (C) 2020 Texas Instruments Incorporated - http://www.ti.com/
+//
+// Redistribution and use in source and binary forms, with or without 
+// modification, are permitted provided that the following conditions 
+// are met:
+// 
+//   Redistributions of source code must retain the above copyright 
+//   notice, this list of conditions and the following disclaimer.
+// 
+//   Redistributions in binary form must reproduce the above copyright
+//   notice, this list of conditions and the following disclaimer in the 
+//   documentation and/or other materials provided with the   
+//   distribution.
+// 
+//   Neither the name of Texas Instruments Incorporated nor the names of
+//   its contributors may be used to endorse or promote products derived
+//   from this software without specific prior written permission.
+// 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// $
+//#############################################################################
+
+//
+// Included Files
+//
+#include <stdint.h>
+#include "f28004x_device.h"
+#include "cla_ex1_adc_fir_shared.h"
+
+//
+// Constants
+//
+// Generated using fdatool
+// LPF FIR Equiripple (Minimum order)
+// Fs = 10 KHz
+// Fp = 1KHz
+// Fs = 1.2KHz
+// Ap = 1dB
+// As = 60dB
+const float coeffs[FILTER_LENGTH] = {
+    -0.001450896263, -0.002587673953, -0.004052460194, -0.005146390758,
+    -0.005302635022, -0.004123416729, -0.001599921845,  0.001774580101,
+     0.005083137657,  0.007268541493,  0.007531697396,  0.005697282963,
+     0.002378743142, -0.001170526375, -0.003500194754, -0.003550597467,
+    -0.001150680939,  0.002810658189,  0.006660279818,  0.008596077561,
+     0.007479144260,  0.003425056580, -0.002098763129, -0.006775159854,
+    -0.008386576548, -0.005837406963,  0.000204711832,  0.007386548445,
+     0.012523123990,  0.012941516000,  0.007769393735, -0.001419530716,
+    -0.010977217930, -0.016540909190, -0.014908853920, -0.005669993348,
+     0.008166464977,  0.020959539340,  0.026505827900,  0.020691763610,
+     0.003699187422, -0.019207946960, -0.038825403900, -0.044873356820,
+    -0.029679548000,  0.008626620285,  0.064643919470,  0.126636445500,
+     0.179717764300,  0.210295468600,  0.210295468600,  0.179717764300,
+     0.126636445500,  0.064643919470,  0.008626620285, -0.029679548000,
+    -0.044873356820, -0.038825403900, -0.019207946960,  0.003699187422,
+     0.020691763610,  0.026505827900,  0.020959539340,  0.008166464977,
+    -0.005669993348, -0.014908853920, -0.016540909190, -0.010977217930,
+    -0.001419530716,  0.007769393735,  0.012941516000,  0.012523123990,
+     0.007386548445,  0.000204711832, -0.005837406963, -0.008386576548,
+    -0.006775159854, -0.002098763129,  0.003425056580,  0.007479144260,
+     0.008596077561,  0.006660279818,  0.002810658189, -0.001150680939,
+    -0.003550597467, -0.003500194754, -0.001170526375,  0.002378743142,
+     0.005697282963,  0.007531697396,  0.007268541493,  0.005083137657,
+     0.001774580101, -0.001599921845, -0.004123416729, -0.005302635022,
+    -0.005146390758, -0.004052460194, -0.002587673953, -0.001450896263,
+};
+
+//
+// Globals
+//
+// Note that the globals defined in the .cla source are global to the cla source
+// file.  i.e. they may be shared across tasks. All of the data shared between
+// the CLA and the C28x CPU must be defined in the C (or C++) code, and not the
+// CLA code.  
+//
+// Filter delay line
+float D[FILTER_LENGTH];
+
+//-----------------------------------------------------------------------------
+//
+// Task 1 - FIR Filter
+//
+// Description: A low pass Finite Impulse Response (FIR) filter.
+//
+//-----------------------------------------------------------------------------
+__attribute__((interrupt)) void Cla1Task1 ( void )
+{
+    //Local Variables
+    int16_t i, filter_in;
+
+    __mdebugstop();
+
+    filter_out = 0.0;
+    filter_in  = AdcaResultRegs.ADCRESULT0;
+    filter_in  = filter_in  - (1 << 11); // Read ADC value minus bias
+
+    //Shift the delay line to the right by 1
+    #pragma UNROLL(FILTER_LENGTH-1)
+    for(i = FILTER_LENGTH-1; i > 0; i--){
+        D[i] = D[i-1];
+        //Multiply coefficients with the delay line and accumulate
+        filter_out   += coeffs[i] * D[i];
+    }
+
+    __mdebugstop();
+    //Get adc input into start of the delay line
+    //note the adc input is simulated in software
+    D[0] = (float)filter_in; //convert to single precision float
+    filter_out  += coeffs[0] * D[0];
+}
+
+//-----------------------------------------------------------------------------
+//
+// Task 2 - Title Here
+//
+// Description: Description/steps here.
+//
+//-----------------------------------------------------------------------------
+__attribute__((interrupt))  void Cla1Task2 ( void )
+{
+
+}
+
+//-----------------------------------------------------------------------------
+//
+// Task 3 - Title Here
+//
+// Description: Description/steps here.
+//
+//-----------------------------------------------------------------------------
+__attribute__((interrupt))  void Cla1Task3 ( void )
+{
+
+}
+
+//-----------------------------------------------------------------------------
+//
+// Task 4 - Title Here
+//
+// Description: Description/steps here.
+//
+//-----------------------------------------------------------------------------
+__attribute__((interrupt))  void Cla1Task4 ( void )
+{
+
+}
+
+//-----------------------------------------------------------------------------
+//
+// Task 5 - Title Here
+//
+// Description: Description/steps here.
+//
+//-----------------------------------------------------------------------------
+__attribute__((interrupt))  void Cla1Task5 ( void )
+{
+
+}
+
+//-----------------------------------------------------------------------------
+//
+// Task 6 - Title Here
+//
+// Description: Description/steps here.
+//
+//-----------------------------------------------------------------------------
+__attribute__((interrupt))  void Cla1Task6 ( void )
+{
+
+}
+
+//-----------------------------------------------------------------------------
+//
+// Task 7 - Title Here
+//
+// Description: Description/steps here.
+//
+//-----------------------------------------------------------------------------
+__attribute__((interrupt))  void Cla1Task7 ( void )
+{
+
+}
+
+//-----------------------------------------------------------------------------
+//
+// Task 8 - One Time Initialization Task
+//
+// Description: This task will clear out the delay line
+//
+//-----------------------------------------------------------------------------
+__attribute__((interrupt))  void Cla1Task8 ( void )
+{
+    // Locals
+    int16_t i;
+
+    __mdebugstop();
+    for(i = 0; i < (int16_t)FILTER_LENGTH; i++){
+        D[i] = 0.0;
+    }
+}
+
+//
+// End of File
+//
