@@ -1,6 +1,6 @@
 # Motor Controller Program for TI F280049C
 
-BLDC motor controller code for use on TI LaunchXL-F280049C board.
+BLDC motor controller code for use on **TI LaunchXL-F280049C** board. To contribute to this project you must have *Code Composer Studio* and the *C2000Ware* drivers installed on your system. This project **cannot be modified with Energia**.
 
 ## Tools Used for Development
 - Code Composer Studio IDE
